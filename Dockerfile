@@ -3,8 +3,9 @@ FROM node:18-slim
 WORKDIR /app
 
 COPY package*.json ./
-# Install dependencies - legacy-peer-deps helps with version conflicts
-RUN npm install --legacy-peer-deps
+# Clean install and force specific ajv versions to resolve webpack/react-scripts issues
+RUN npm install --legacy-peer-deps && \
+    npm install ajv@^8.12.0 ajv-keywords@^5.1.0 --save-exact --legacy-peer-deps
 
 COPY . .
 
