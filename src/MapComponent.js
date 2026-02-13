@@ -85,11 +85,13 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
     }
   }, [initialGeoJson]);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       // Clear existing data before uploading new KML
-      handleClearAll(true);
+      // We MUST await this to prevent race conditions where the clear-all 
+      // finishes after the new data is loaded.
+      await handleClearAll(true);
 
       setIsDataVisible(true); // Hide search bar when uploading
       // 1. Upload file to server
@@ -266,13 +268,13 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
     handleClearAll
   }));
 
-  const _onCreated = (e) => {
+  const _onCreated = async (e) => {
     console.log("Created: ", e);
     
     // If we are starting a fresh drawing and there's existing data, 
     // we clear it first to ensure a clean slate for the new entry.
     if (geoJsonData || drawnFeatures.length > 0) {
-      handleClearAll(true);
+      await handleClearAll(true);
     }
 
     setIsDataVisible(true); 
