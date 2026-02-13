@@ -61,7 +61,7 @@ const SearchControl = ({ visible }) => {
 };
 
 const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffset, onSaveSuccess, initialGeoJson }, ref) => {
-  const position = [18.335, 73.853]; // Set a more relevant default (Pune area based on your data)
+  const position = [18.5204, 73.8567]; // Pune center
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [dataKey, setDataKey] = useState(0);
   const [isDataVisible, setIsDataVisible] = useState(false);
@@ -144,7 +144,7 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
     }
   };
 
-  // Zoom to layer when geoJsonData changes
+  // Zoom to layer with improved padding and maxZoom
   const ZoomToLayer = ({ data }) => {
     const map = useMap();
     useEffect(() => {
@@ -154,7 +154,11 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
           if (layer.getLayers().length > 0) {
             const bounds = layer.getBounds();
             if (bounds.isValid()) {
-              map.fitBounds(bounds);
+              map.fitBounds(bounds, { 
+                padding: [50, 50], 
+                maxZoom: 18,
+                animate: true 
+              });
             }
           }
         } catch (e) {
@@ -334,23 +338,38 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
           style={{ display: 'none' }}
         />
       </div>
-      <MapContainer center={position} zoom={18} scrollWheelZoom={true} maxZoom={24} style={{ height: '100%', width: '100%' }}>
+      <MapContainer 
+        center={position} 
+        zoom={18} 
+        scrollWheelZoom={true} 
+        maxZoom={24} 
+        style={{ height: '100%', width: '100%' }}
+        key={dataKey}
+      >
         <SearchControl visible={!isDataVisible} />
         <LayersControl position="topright">
-          <LayersControl.BaseLayer checked name="Google Streets">
+          <LayersControl.BaseLayer checked name="Google Satellite">
             <TileLayer
-              url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+              url="https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
+              subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+              attribution='&copy; Google Maps'
               maxZoom={24}
               maxNativeZoom={20}
-              subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
             />
           </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="Google Satellite">
+          <LayersControl.BaseLayer name="Google Streets">
             <TileLayer
-              url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
+              url="https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+              subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+              attribution='&copy; Google Maps'
               maxZoom={24}
               maxNativeZoom={20}
-              subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+            />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer name="OpenStreetMap">
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
           </LayersControl.BaseLayer>
         </LayersControl>
