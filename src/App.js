@@ -10,7 +10,6 @@ import API_URL from './config';
 
 function App() {
   const { user, token, logout, loading: authLoading } = useAuth();
-  console.log('App rendering, auth state:', { user, authLoading, hasToken: !!token });
   const [isRegistering, setIsRegistering] = useState(false);
   const [chainage, setChainage] = useState('');
   const [offsetType, setOffsetType] = useState('');
