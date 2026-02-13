@@ -9,6 +9,7 @@ import L from 'leaflet';
 import 'leaflet-draw'; // Force load GeometryUtil
 import { kml } from "@tmcw/togeojson";
 import API_URL from './config';
+import { useAuth } from './AuthContext';
 
 // Global override for Leaflet distance formatting
 const applyDistanceOverride = () => {
@@ -95,6 +96,7 @@ const SearchControl = ({ visible }) => {
 };
 
 const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffset, onSaveSuccess, initialGeoJson }, ref) => {
+  const { token } = useAuth();
   const position = [18.5204, 73.8567]; // Pune center
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [dataKey, setDataKey] = useState(0);
@@ -139,6 +141,9 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
 
       fetch(`${API_URL}/upload-kml`, {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formData,
       })
       .then(response => response.json())
@@ -246,6 +251,7 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload),
       });
@@ -277,7 +283,10 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
     try {
       // 1. Tell server to clear all data
       const response = await fetch(`${API_URL}/clear-all`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       const result = await response.json();
