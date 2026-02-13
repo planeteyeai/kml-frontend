@@ -9,6 +9,18 @@ import L from 'leaflet';
 import { kml } from "@tmcw/togeojson";
 import API_URL from './config';
 
+// Override Leaflet.draw's distance formatting to show decimals for meters
+if (L.GeometryUtil && L.GeometryUtil.readableDistance) {
+    const originalReadableDistance = L.GeometryUtil.readableDistance;
+    L.GeometryUtil.readableDistance = function (distance, metric, feet, nautic, precision) {
+        // If metric and distance is less than 1km, show with 2 decimal places
+        if (metric && distance < 1000) {
+            return distance.toFixed(2) + ' m';
+        }
+        return originalReadableDistance.call(this, distance, metric, feet, nautic, precision);
+    };
+}
+
 // Fix for default marker icon not showing correctly in some builds
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -384,7 +396,11 @@ const MapComponent = forwardRef(({ chainage, offsetType, laneCount, kmlMergeOffs
               circle: false,
               circlemarker: false,
               marker: true,
-              polyline: true,
+              polyline: {
+                metric: true,
+                showLength: true,
+                precision: 2
+              },
               polygon: true,
             }}
           />
