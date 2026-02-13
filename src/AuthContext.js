@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     const savedUsername = localStorage.getItem('username');
+    console.log('AuthContext checking storage:', { savedToken, savedUsername });
     if (savedToken && savedUsername) {
       setToken(savedToken);
       setUser({ username: savedUsername });
