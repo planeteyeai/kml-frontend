@@ -10,33 +10,38 @@ import 'leaflet-draw'; // Force load GeometryUtil
 import { kml } from "@tmcw/togeojson";
 import API_URL from './config';
 
-// Robust override for Leaflet.draw's distance formatting
-(function overrideDistance() {
-    // If L.GeometryUtil doesn't exist yet, wait and try again (for some build systems)
-    if (!L.GeometryUtil || !L.GeometryUtil.readableDistance) {
-        setTimeout(overrideDistance, 100);
-        return;
+// Global override for Leaflet distance formatting
+const applyDistanceOverride = () => {
+    const targetL = window.L || L;
+    if (targetL && targetL.GeometryUtil) {
+        targetL.GeometryUtil.readableDistance = function (distance, metric) {
+            if (metric !== false) { // Default to metric
+                if (distance >= 1000) {
+                    return (distance / 1000).toFixed(3) + ' km';
+                }
+                return distance.toFixed(2) + ' m';
+            }
+            // Non-metric fallback
+            const ft = distance * 3.2808399;
+            if (ft > 5280) {
+                return (ft / 5280).toFixed(3) + ' mi';
+            }
+            return ft.toFixed(2) + ' ft';
+        };
+        console.log("Distance override applied to", targetL === window.L ? "window.L" : "local L");
     }
+};
 
-    L.GeometryUtil.readableDistance = function (distance, metric, feet, nautic, precision) {
-        let distanceStr;
-        if (metric) {
-            if (distance > 1000) {
-                distanceStr = (distance / 1000).toFixed(2) + ' km';
-            } else {
-                distanceStr = distance.toFixed(2) + ' m';
-            }
-        } else {
-            distance *= 3.2808399;
-            if (distance > 5280) {
-                distanceStr = (distance / 5280).toFixed(2) + ' mi';
-            } else {
-                distanceStr = distance.toFixed(2) + ' ft';
-            }
-        }
-        return distanceStr;
-    };
-})();
+// Apply immediately and also on a delay to catch late-loading Leaflet
+  applyDistanceOverride();
+  setTimeout(applyDistanceOverride, 1000);
+  setTimeout(applyDistanceOverride, 3000);
+
+  // Configure Leaflet.draw tooltips for precision
+  if (L.drawLocal) {
+    L.drawLocal.draw.handlers.polyline.tooltip.cont = 'Click to continue drawing line. Length: ';
+    L.drawLocal.draw.handlers.polyline.tooltip.end = 'Click last point to finish line. Total: ';
+  }
 
 // Fix for default marker icon not showing correctly in some builds
 import icon from 'leaflet/dist/images/marker-icon.png';
