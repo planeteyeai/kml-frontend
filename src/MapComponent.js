@@ -6,20 +6,37 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import L from 'leaflet';
+import 'leaflet-draw'; // Force load GeometryUtil
 import { kml } from "@tmcw/togeojson";
 import API_URL from './config';
 
-// Override Leaflet.draw's distance formatting to show decimals for meters
-if (L.GeometryUtil && L.GeometryUtil.readableDistance) {
-    const originalReadableDistance = L.GeometryUtil.readableDistance;
+// Robust override for Leaflet.draw's distance formatting
+(function overrideDistance() {
+    // If L.GeometryUtil doesn't exist yet, wait and try again (for some build systems)
+    if (!L.GeometryUtil || !L.GeometryUtil.readableDistance) {
+        setTimeout(overrideDistance, 100);
+        return;
+    }
+
     L.GeometryUtil.readableDistance = function (distance, metric, feet, nautic, precision) {
-        // If metric and distance is less than 1km, show with 2 decimal places
-        if (metric && distance < 1000) {
-            return distance.toFixed(2) + ' m';
+        let distanceStr;
+        if (metric) {
+            if (distance > 1000) {
+                distanceStr = (distance / 1000).toFixed(2) + ' km';
+            } else {
+                distanceStr = distance.toFixed(2) + ' m';
+            }
+        } else {
+            distance *= 3.2808399;
+            if (distance > 5280) {
+                distanceStr = (distance / 5280).toFixed(2) + ' mi';
+            } else {
+                distanceStr = distance.toFixed(2) + ' ft';
+            }
         }
-        return originalReadableDistance.call(this, distance, metric, feet, nautic, precision);
+        return distanceStr;
     };
-}
+})();
 
 // Fix for default marker icon not showing correctly in some builds
 import icon from 'leaflet/dist/images/marker-icon.png';
