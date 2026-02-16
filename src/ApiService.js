@@ -1,6 +1,8 @@
 import axios from "axios";
 import API_URL from "./config";
 
+const DISTRESS_PREDICTED_API = "https://distress-kml.up.railway.app";
+
 export async function generateDistressReport({ file, startDate, endDate }) {
   const params = new URLSearchParams();
   if (startDate) params.set("start_date", startDate);
@@ -12,6 +14,17 @@ export async function generateDistressReport({ file, startDate, endDate }) {
   const query = params.toString();
   const url = `${API_URL}/api/distress-report${query ? `?${query}` : ""}`;
 
+  const response = await axios.post(url, formData);
+  return response.data;
+}
+
+export async function generateDistressPredicted({ file, startDate, endDate }) {
+  const formData = new FormData();
+  formData.append("file", file);
+  if (startDate) formData.append("start_date", startDate);
+  if (endDate) formData.append("end_date", endDate);
+
+  const url = `${DISTRESS_PREDICTED_API}/detect_predicted_distress_combined`;
   const response = await axios.post(url, formData);
   return response.data;
 }

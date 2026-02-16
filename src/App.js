@@ -7,6 +7,7 @@ import Register from "./Register";
 import { useAuth } from "./AuthContext";
 import API_URL from "./config";
 import DistressReport from "./DistressReport";
+import DistressPredicted from "./DistressPredicted";
 import {
   BrowserRouter as Router,
   Routes,
@@ -140,7 +141,11 @@ function MainKmlApp() {
                   <span className="landing-card-cta secondary">Get Started</span>
                 </div>
               </button>
-              <button className="landing-card landing-card-secondary">
+              <button
+                className="landing-card landing-card-secondary"
+                type="button"
+                onClick={() => navigate("/distress-predicted")}
+              >
                 <div className="landing-card-logo landing-card-logo-Predicted">
                   <img
                     src="/Destress_Predicted.png"
@@ -153,7 +158,7 @@ function MainKmlApp() {
                   Advanced distress detection and analytics.
                 </div>
                 <div className="landing-card-footer">
-                  <span className="landing-card-cta tertiary">Coming Soon</span>
+                  <span className="landing-card-cta secondary">Get Started</span>
                 </div>
               </button>
             </div>
@@ -348,6 +353,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/distress-report" element={<DistressReport />} />
+        <Route path="/distress-predicted" element={<DistressPredicted />} />
         <Route path="/*" element={<MainKmlApp />} />
       </Routes>
     </Router>
