@@ -11,6 +11,7 @@ import API_URL from './config';
 function App() {
   const { user, token, logout, loading: authLoading } = useAuth();
   const [isRegistering, setIsRegistering] = useState(false);
+  const [showLanding, setShowLanding] = useState(true);
   const [chainage, setChainage] = useState('');
   const [offsetType, setOffsetType] = useState('');
   const [laneCount, setLaneCount] = useState('2');
@@ -56,10 +57,48 @@ function App() {
   }
 
   if (!user) {
-    return isRegistering ? (
-      <Register onSwitchToLogin={() => setIsRegistering(false)} />
-    ) : (
-      <Login onSwitchToRegister={() => setIsRegistering(true)} />
+    if (!showLanding) {
+      return isRegistering ? (
+        <Register onSwitchToLogin={() => setIsRegistering(false)} />
+      ) : (
+        <Login onSwitchToRegister={() => setIsRegistering(true)} />
+      );
+    }
+
+    return (
+      <div className="App landing-screen-root">
+        <div className="landing-background">
+          <div className="landing-content">
+            <h1 className="landing-title">Welcome to KML Tools</h1>
+            <p className="landing-subtitle">
+              Choose how you want to work with your road and distress data
+            </p>
+            <div className="landing-card-grid">
+              <button
+                className="landing-card landing-card-primary"
+                onClick={() => setShowLanding(false)}
+              >
+                <div className="landing-card-label">KML Creation</div>
+                <div className="landing-card-description">
+                  Draw alignments, generate precise KML and pipeline outputs.
+                </div>
+              </button>
+              <button className="landing-card landing-card-secondary">
+                <div className="landing-card-label">Distress Report</div>
+                <div className="landing-card-description">
+                  Prepare and manage distress reporting for your projects.
+                </div>
+              </button>
+              <button className="landing-card landing-card-secondary">
+                <div className="landing-card-label">Distress Predator</div>
+                <div className="landing-card-description">
+                  Advanced distress detection and analytics (coming soon).
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 

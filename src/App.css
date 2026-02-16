@@ -259,6 +259,173 @@ body {
   transition: all 0.2s;
   font-size: 15px;
   color: #ecf0f1;
+
+.landing-screen-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top left, #2c3e50 0, #111 45%, #000 100%);
+}
+
+.landing-background {
+  width: 100%;
+  max-width: 1100px;
+  padding: 40px 24px;
+}
+
+.landing-content {
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(25, 42, 86, 0.98));
+  border-radius: 18px;
+  padding: 32px 28px 40px 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  animation: landingFadeIn 0.6s ease-out forwards;
+}
+
+.landing-title {
+  font-size: 2.2rem;
+  margin: 0;
+  color: #ecf0f1;
+  letter-spacing: 0.04em;
+}
+
+.landing-subtitle {
+  margin-top: 8px;
+  margin-bottom: 24px;
+  color: #bdc3c7;
+  font-size: 0.98rem;
+}
+
+.landing-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.landing-card {
+  border-radius: 14px;
+  padding: 22px 18px;
+  background: radial-gradient(circle at top left, rgba(46, 134, 222, 0.2), rgba(44, 62, 80, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.55);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.landing-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.16), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.landing-card-primary {
+  background: radial-gradient(circle at top left, rgba(46, 204, 113, 0.4), rgba(39, 174, 96, 0.95));
+  border-color: rgba(46, 204, 113, 0.8);
+}
+
+.landing-card-secondary {
+  background: radial-gradient(circle at top left, rgba(52, 152, 219, 0.35), rgba(41, 128, 185, 0.98));
+}
+
+.landing-card-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.landing-card-description {
+  font-size: 0.9rem;
+  color: #ecf0f1;
+  opacity: 0.9;
+}
+
+.landing-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.landing-card:hover::before {
+  opacity: 1;
+}
+
+.landing-card:active {
+  transform: translateY(-2px) scale(0.99);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.6);
+}
+
+.landing-card-primary:hover {
+  background: radial-gradient(circle at top left, rgba(46, 204, 113, 0.55), rgba(39, 174, 96, 1));
+}
+
+.landing-card-secondary:hover {
+  background: radial-gradient(circle at top left, rgba(52, 152, 219, 0.5), rgba(41, 128, 185, 1));
+}
+
+.landing-card-grid > .landing-card:nth-child(1) {
+  animation: cardFloat 3.2s ease-in-out infinite;
+}
+
+.landing-card-grid > .landing-card:nth-child(2) {
+  animation: cardFloat 3.6s ease-in-out infinite;
+  animation-delay: 0.12s;
+}
+
+.landing-card-grid > .landing-card:nth-child(3) {
+  animation: cardFloat 3.9s ease-in-out infinite;
+  animation-delay: 0.18s;
+}
+
+@keyframes landingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .landing-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-content {
+    padding: 24px 20px 28px 20px;
+  }
+
+  .landing-title {
+    font-size: 1.8rem;
+  }
+}
+  color: #ecf0f1;
 }
 
 .leaflet-control-geosearch .results > *:hover {
