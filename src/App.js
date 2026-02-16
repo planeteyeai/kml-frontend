@@ -67,6 +67,15 @@ function App() {
 
     return (
       <div className="App landing-screen-root">
+        <div className="landing-topbar">
+          <div className="landing-brand">
+            <div className="landing-logo-dot" />
+            <span className="landing-brand-text">KML Tools</span>
+          </div>
+          <div className="landing-top-actions">
+            <span className="landing-pill">Production</span>
+          </div>
+        </div>
         <div className="landing-background">
           <div className="landing-content">
             <h1 className="landing-title">Welcome to KML Tools</h1>
@@ -82,17 +91,26 @@ function App() {
                 <div className="landing-card-description">
                   Draw alignments, generate precise KML and pipeline outputs.
                 </div>
+                <div className="landing-card-footer">
+                  <span className="landing-card-cta primary">Get Started</span>
+                </div>
               </button>
               <button className="landing-card landing-card-secondary">
                 <div className="landing-card-label">Distress Report</div>
                 <div className="landing-card-description">
                   Prepare and manage distress reporting for your projects.
                 </div>
+                <div className="landing-card-footer">
+                  <span className="landing-card-cta secondary">Get Started</span>
+                </div>
               </button>
               <button className="landing-card landing-card-secondary">
                 <div className="landing-card-label">Distress Predator</div>
                 <div className="landing-card-description">
                   Advanced distress detection and analytics (coming soon).
+                </div>
+                <div className="landing-card-footer">
+                  <span className="landing-card-cta tertiary">Coming Soon</span>
                 </div>
               </button>
             </div>

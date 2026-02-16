@@ -268,6 +268,55 @@ body {
   background: radial-gradient(circle at top left, #2c3e50 0, #111 45%, #000 100%);
 }
 
+.landing-topbar {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1100px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ecf0f1;
+  font-size: 0.9rem;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.landing-logo-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: conic-gradient(from 160deg, #3498db, #9b59b6, #e67e22, #f1c40f, #3498db);
+  box-shadow: 0 0 18px rgba(52, 152, 219, 0.9);
+}
+
+.landing-brand-text {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.landing-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.landing-pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.8rem;
+  color: #bdc3c7;
+}
+
 .landing-background {
   width: 100%;
   max-width: 1100px;
@@ -350,6 +399,48 @@ body {
   font-size: 0.9rem;
   color: #ecf0f1;
   opacity: 0.9;
+}
+
+.landing-card-footer {
+  margin-top: 18px;
+}
+
+.landing-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.landing-card-cta.primary {
+  background: linear-gradient(135deg, #1e90ff, #00bcd4);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 188, 212, 0.55);
+}
+
+.landing-card-cta.secondary {
+  background: linear-gradient(135deg, #ff9f43, #e67e22);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(230, 126, 34, 0.55);
+}
+
+.landing-card-cta.tertiary {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(155, 89, 182, 0.55);
+}
+
+.landing-card:hover .landing-card-cta {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
 }
 
 .landing-card:hover {
