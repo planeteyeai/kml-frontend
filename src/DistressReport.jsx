@@ -3,6 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { generateDistressFullpipelineDirect, generateDistressFullpipelineProxy } from "./ApiService";
 
+const toYmd = (val) => {
+  if (!val) return val;
+  const s = String(val).trim().replace(/\//g, "-");
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const m = s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+  if (m) {
+    const dd = String(m[1]).padStart(2, "0");
+    const mm = String(m[2]).padStart(2, "0");
+    const yyyy = m[3];
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  return s;
+};
+
 // Removing old JSON to CSV conversion as API now returns files directly
 
 export default function DistressReport() {
@@ -46,15 +60,15 @@ export default function DistressReport() {
       try {
         result = await generateDistressFullpipelineDirect({
           file,
-          startDate,
-          endDate,
+          startDate: toYmd(startDate),
+          endDate: toYmd(endDate),
           projectName,
         });
       } catch (_) {
         result = await generateDistressFullpipelineProxy({
           file,
-          startDate,
-          endDate,
+          startDate: toYmd(startDate),
+          endDate: toYmd(endDate),
           projectName,
         });
       }
@@ -88,8 +102,8 @@ export default function DistressReport() {
 
   const handleDownload = () => {
     if (!csvBlob) return;
-    const safeStart = startDate || "start";
-    const safeEnd = endDate || "end";
+    const safeStart = toYmd(startDate) || "start";
+    const safeEnd = toYmd(endDate) || "end";
     const mime = csvBlob.type || "";
     const ext = mime.includes("spreadsheetml") || mime.includes("excel") ? "xlsx" : "csv";
     const filename = `distress_report_${safeStart}_${safeEnd}.${ext}`;
