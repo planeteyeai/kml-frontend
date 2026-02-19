@@ -259,7 +259,7 @@ export async function downloadDetectDistressFinalPredicted({
     responseType: "blob",
     headers: {
       Accept:
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     },
   });
   let filename = "distress_predicted_final.xlsx";
@@ -297,7 +297,7 @@ export async function generateDistressFinalPredictedProxy({
     responseType: "blob",
     headers: {
       Accept:
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     },
   });
   let filename = "distress_predicted_final.xlsx";

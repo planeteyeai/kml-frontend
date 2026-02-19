@@ -82,10 +82,7 @@ export default function DistressPredicted() {
         blob = proxyBlob;
         setCsvFilename(proxyName || "");
       } catch (proxyErr) {
-        const proxyStatus = proxyErr && proxyErr.response && proxyErr.response.status;
-        if (proxyStatus) {
-          throw proxyErr;
-        } else {
+        try {
           const { blob: fileBlob, filename } = await downloadDetectDistressFinalPredicted({
             file,
             startDate: toYmd(startDate),
@@ -94,6 +91,8 @@ export default function DistressPredicted() {
           });
           blob = fileBlob;
           setCsvFilename(filename || "");
+        } catch (directErr) {
+          throw proxyErr;
         }
       }
 
