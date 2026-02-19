@@ -92,7 +92,7 @@ export async function downloadDetectPredictedDistressCombined({
       formData.append("file", file);
     }
   }
-  const url = `https://distress-kml.up.railway.app/detect-predicted_distress-combined/`;
+  const url = `https://distress-kml.up.railway.app/detect-distress-final_predicted/`;
   const response = await axios.post(url, formData, {
     responseType: "blob",
     headers: {
@@ -191,7 +191,7 @@ export async function generateDistressFullpipelineDirect({
           Accept: "application/json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         },
       });
-    } catch (__){}
+    } catch (__) { }
   }
 
   // 3) Poll GET download endpoint until file is ready (up to 3 attempts)
