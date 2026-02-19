@@ -310,12 +310,16 @@ export async function generateDistressFinalPredictedProxy({
   endDate,
   projectName,
 }) {
+  const params = new URLSearchParams();
+  if (startDate) params.set("start_date", startDate);
+  if (endDate) params.set("end_date", endDate);
+  if (projectName) params.set("project_name", projectName);
   const formData = new FormData();
   if (startDate) formData.append("start_date", startDate);
   if (endDate) formData.append("end_date", endDate);
   if (projectName) formData.append("project_name", projectName);
   if (file) formData.append("file", file);
-  const url = `${API_URL}/api/distress-final-predicted`;
+  const url = `${API_URL}/api/distress-final-predicted${params.toString() ? `?${params.toString()}` : ""}`;
   const response = await axios.post(url, formData, {
     responseType: "blob",
     headers: {
