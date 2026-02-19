@@ -52,8 +52,6 @@ export default function DistressPredicted() {
       }
 
       setCsvBlob(blob);
-      // optional: remember server-provided filename for download
-      // not strictly required for functionality
       setSuccessMessage(
         "Predicted distress generated successfully. You can now download the Excel file."
       );
