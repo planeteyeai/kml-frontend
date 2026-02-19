@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { generateDistressFullpipelineProxy, generateDistressFullpipelineDirect } from "./ApiService";
 
- 
+
 
 export default function DistressReport() {
   const [startDate, setStartDate] = useState("");
@@ -78,7 +78,23 @@ export default function DistressReport() {
       }
       setExcelBlob(result.blob);
       setServerFilename(result.filename || "");
-      setSuccessMessage("Report generated successfully. You can now download the Excel file.");
+      setSuccessMessage("Report generated successfully. Starting download...");
+
+      // --- AUTOMATIC DOWNLOAD START ---
+      const filename =
+        result.filename ||
+        `distress_report_${startDate || "start"}_${endDate || "end"}.xlsx`;
+      const blob = result.blob;
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+      // --- AUTOMATIC DOWNLOAD END ---
+
     } catch (err) {
       let detail = null;
       if (err && err.response && err.response.data) {
@@ -163,39 +179,39 @@ export default function DistressReport() {
                   <label className="text-xs font-medium uppercase tracking-wide text-slate-300">
                     Start Date
                   </label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  onClick={(e) => {
-                    try {
-                      if (typeof e.target.showPicker === "function") {
-                        e.target.showPicker();
-                      }
-                    } catch (_) {}
-                  }}
-                  className="distress-date-input rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none ring-0 transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40"
-                  required
-                />
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    onClick={(e) => {
+                      try {
+                        if (typeof e.target.showPicker === "function") {
+                          e.target.showPicker();
+                        }
+                      } catch (_) { }
+                    }}
+                    className="distress-date-input rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none ring-0 transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40"
+                    required
+                  />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-medium uppercase tracking-wide text-slate-300">
                     End Date
                   </label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  onClick={(e) => {
-                    try {
-                      if (typeof e.target.showPicker === "function") {
-                        e.target.showPicker();
-                      }
-                    } catch (_) {}
-                  }}
-                  className="distress-date-input rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none ring-0 transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40"
-                  required
-                />
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    onClick={(e) => {
+                      try {
+                        if (typeof e.target.showPicker === "function") {
+                          e.target.showPicker();
+                        }
+                      } catch (_) { }
+                    }}
+                    className="distress-date-input rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none ring-0 transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40"
+                    required
+                  />
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">

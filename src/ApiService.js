@@ -324,7 +324,7 @@ export async function triggerDistressFullpipeline({ file, startDate, endDate, pr
   if (endDate) formData.append("end_date", endDate);
   if (projectName) formData.append("project_name", projectName);
   if (file) formData.append("file", file);
-  const primary = "https://distress-kml.up.railway.app/road-distressFullpipeline/";
+  const primary = "https://distress-kml.up.railway.app/road-distress-fullpipeline_reported";
   const fallback = "https://distress-kml.up.railway.app/road-distress-fullpipeline/";
   try {
     const res = await axios.post(primary, formData);
@@ -343,7 +343,7 @@ export async function downloadDistressFullpipeline({ startDate, endDate }) {
   const params = new URLSearchParams();
   if (startDate) params.set("start_date", startDate);
   if (endDate) params.set("end_date", endDate);
-  const primary = `https://distress-kml.up.railway.app/road-distress-fullpipeline?${params.toString()}`;
+  const primary = `https://distress-kml.up.railway.app/road-distress-fullpipeline_reported?${params.toString()}`;
   const fallback = `https://distress-kml.up.railway.app/road-distressFullpipeline?${params.toString()}`;
   let response;
   try {
