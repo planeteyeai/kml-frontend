@@ -72,6 +72,7 @@ export default function DistressPredicted() {
     try {
       setLoading(true);
       let blob;
+      let filenameToUse = "";
       try {
         const { blob: proxyBlob, filename: proxyName } = await generateDistressFinalPredictedProxy({
           file,
@@ -80,17 +81,19 @@ export default function DistressPredicted() {
           projectName,
         });
         blob = proxyBlob;
-        setCsvFilename(proxyName || "");
+        filenameToUse = proxyName || "";
+        setCsvFilename(filenameToUse);
       } catch (proxyErr) {
         try {
-          const { blob: fileBlob, filename } = await downloadDetectDistressFinalPredicted({
+          const { blob: fileBlob, filename: directName } = await downloadDetectDistressFinalPredicted({
             file,
             startDate: toYmd(startDate),
             endDate: toYmd(endDate),
             projectName,
           });
           blob = fileBlob;
-          setCsvFilename(filename || "");
+          filenameToUse = directName || "";
+          setCsvFilename(filenameToUse);
         } catch (directErr) {
           throw proxyErr;
         }
@@ -109,8 +112,8 @@ export default function DistressPredicted() {
       const ext =
         mime.includes("spreadsheetml") || mime.includes("excel") ? "xlsx" : "csv";
       const finalFilename =
-        proxyName && proxyName.toLowerCase().endsWith(".xlsx")
-          ? proxyName
+        filenameToUse && filenameToUse.toLowerCase().endsWith(".xlsx")
+          ? filenameToUse
           : `distress_predicted_${safeStart}_${safeEnd}.${ext}`;
 
       const downloadUrl = window.URL.createObjectURL(blob);
